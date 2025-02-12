@@ -3,6 +3,7 @@ package ru.netology.nmedia.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +21,7 @@ class AuthViewModel : ViewModel() {
         get() = AppAuth.getInstance().authStateFlow.value.id != 0L
 
     fun authenticate(login: String, password: String, onResult: (Boolean) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             try {
                 val response = PostsApi.service.authenticate(login, password)
                 if (response.isSuccessful) {
